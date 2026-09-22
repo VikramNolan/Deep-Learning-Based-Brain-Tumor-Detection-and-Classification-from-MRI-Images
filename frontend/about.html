@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Understanding Brain Tumors & MRI Classification — Detailed educational guide on MRI principles, tumor categories, CNN architectures, and dataset configurations.">
+  <title>Understanding Brain Tumors & MRI Classification — NeuroScan AI</title>
+  
+  <!-- Modern Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Design System Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Sticky Navbar -->
+  <header class="navbar" id="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="nav-brand" id="nav-brand-logo" aria-label="NeuroScan AI Homepage">
+        <div class="brand-icon" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2a7 7 0 0 0-7 7c0 2.5 1.5 4.5 3 6v3h8v-3c1.5-1.5 3-3.5 3-6a7 7 0 0 0-7-7z"></path>
+            <path d="M9 18h6"></path>
+            <path d="M10 22h4"></path>
+            <path d="M12 2v6"></path>
+            <path d="M9 7l6 0"></path>
+          </svg>
+        </div>
+        <span class="brand-name">NeuroScan AI</span>
+        <span class="brand-tag">Research</span>
+      </a>
+
+      <nav aria-label="Primary Navigation">
+        <ul class="nav-menu" id="nav-menu">
+          <li><a href="index.html" class="nav-link" id="nav-link-home">Home</a></li>
+          <li><a href="prediction.html" class="nav-link" id="nav-link-prediction">Prediction</a></li>
+          <li><a href="about.html" class="nav-link active" id="nav-link-about">About</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="https://github.com/VikramNolan/Deep-Learning-Based-Brain-Tumor-Detection-and-Classification-from-MRI-Images" 
+           target="_blank" 
+           rel="noopener noreferrer" 
+           class="btn-github" 
+           id="nav-github-btn"
+           aria-label="View on GitHub">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+          </svg>
+          <span>GitHub</span>
+        </a>
+      </div>
+
+      <button class="hamburger-btn" id="hamburger-btn" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <!-- About Page Hero -->
+    <section class="about-hero">
+      <div class="container">
+        <span class="section-tag">Scientific Background</span>
+        <h1 class="section-title">Understanding Brain Tumors &amp; MRI Classification</h1>
+        <p class="section-subtitle">
+          An educational guide exploring cranial magnetic resonance imaging, deep learning convolutional architectures, and medical image interpretation.
+        </p>
+      </div>
+    </section>
+
+    <!-- Medical Disclaimer -->
+    <div class="container">
+      <div class="disclaimer-banner" role="alert">
+        <svg class="disclaimer-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+          <line x1="12" y1="9" x2="12" y2="13"></line>
+          <line x1="12" y1="17" x2="12.01" y2="17"></line>
+        </svg>
+        <div class="disclaimer-text">
+          <strong>Educational and Research Use Only:</strong>
+          This AI prediction is not a medical diagnosis. Please consult a qualified healthcare professional for clinical interpretation.
+        </div>
+      </div>
+    </div>
+
+    <!-- Educational Content Sections -->
+    <section class="about-content-section">
+      <div class="container">
+        
+        <!-- SECTION 1: What is a Brain Tumor? -->
+        <article class="about-article" id="brain-tumor">
+          <h2 class="about-h2">
+            <svg class="about-h2-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="16" x2="12" y2="12"></line>
+              <line x1="12" y1="8" x2="12.01" y2="8"></line>
+            </svg>
+            <span>Section 1 &mdash; What is a Brain Tumor?</span>
+          </h2>
+          <p class="about-p">
+            A brain tumor is an abnormal growth of cells within or around the brain. Because the skull is a rigid, non-expandable bone structure, any abnormal mass within the intracranial space can cause elevated intracranial pressure, compress surrounding neurological tissue, and disrupt essential physiological functions.
+          </p>
+          <p class="about-p">
+            Brain tumors differ substantially in their cellular origin, anatomical location, growth rate, and clinical behavior. They are broadly categorized as:
+          </p>
+          <div class="about-cards-grid">
+            <div class="about-subcard">
+              <h3 class="about-subcard-title">Primary Brain Tumors</h3>
+              <p class="about-subcard-text">
+                Tumors that originate directly within brain tissue or adjacent meningeal structures (such as gliomas, meningiomas, or pituitary adenomas).
+              </p>
+            </div>
+            <div class="about-subcard">
+              <h3 class="about-subcard-title">Secondary (Metastatic) Tumors</h3>
+              <p class="about-subcard-text">
+                Tumors that develop when malignant cells from other parts of the body (e.g., lungs, breasts) spread to the brain via the circulatory system.
+              </p>
+            </div>
+          </div>
+        </article>
+
+        <!-- SECTION 2: What is MRI? -->
+        <article class="about-article" id="mri">
+          <h2 class="about-h2">
+            <svg class="about-h2-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M2 12h20M12 2v20"></path>
+              <circle cx="12" cy="12" r="8"></circle>
+            </svg>
+            <span>Section 2 &mdash; What is MRI?</span>
+          </h2>
+          <p class="about-p">
+            <strong>MRI (Magnetic Resonance Imaging)</strong> is a medical imaging technique that produces detailed images of structures inside the body, including the brain. It utilizes strong magnetic fields and radio waves to generate cross-sectional visual representations of internal anatomy.
+          </p>
+          <p class="about-p">
+            Unlike X-rays and Computed Tomography (CT), MRI does not use ionizing radiation. It excels in cranial diagnostic imaging because:
+          </p>
+          <div class="about-cards-grid">
+            <div class="about-subcard">
+              <h3 class="about-subcard-title">Superior Soft-Tissue Contrast</h3>
+              <p class="about-subcard-text">
+                Provides unmatched visual differentiation between gray matter, white matter, cerebrospinal fluid (CSF), and pathological edema.
+              </p>
+            </div>
+            <div class="about-subcard">
+              <h3 class="about-subcard-title">Multi-Planar Acquisition</h3>
+              <p class="about-subcard-text">
+                Allows radiologists to inspect lesions from axial (horizontal), coronal (frontal), and sagittal (lateral) orientations without repositioning the patient.
+              </p>
+            </div>
+          </div>
+        </article>
+
+        <!-- SECTION 3: Brain Tumor Classes -->
+        <article class="about-article" id="classes">
+          <h2 class="about-h2">
+            <svg class="about-h2-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+              <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+            </svg>
+            <span>Section 3 &mdash; Brain Tumor Classes in This Project</span>
+          </h2>
+          <p class="about-p">
+            This deep learning model is trained on 4 specific radiological categories defined in standardized benchmark MRI datasets:
+          </p>
+          <div class="about-cards-grid">
+            <div class="about-subcard" id="glioma">
+              <h3 class="about-subcard-title">
+                <span class="sample-badge-dot dot-glioma"></span>
+                <span>Glioma</span>
+              </h3>
+              <p class="about-subcard-text">
+                Gliomas develop from glial supportive cells (astrocytes, oligodendrocytes, ependymal cells). They are frequently infiltrative, meaning they intermingle with healthy brain tissue rather than forming encapsulated margins. They range from low-grade to highly aggressive forms such as Glioblastoma Multiforme (GBM).
+              </p>
+            </div>
+
+            <div class="about-subcard" id="meningioma">
+              <h3 class="about-subcard-title">
+                <span class="sample-badge-dot dot-meningioma"></span>
+                <span>Meningioma</span>
+              </h3>
+              <p class="about-subcard-text">
+                Meningiomas arise from the meninges &mdash; the protective layers covering the brain and spinal cord. They are primarily extra-axial (growing outside the brain tissue itself) and are predominantly slow-growing and benign, though their volume can exert pressure on nearby cerebral structures.
+              </p>
+            </div>
+
+            <div class="about-subcard" id="pituitary">
+              <h3 class="about-subcard-title">
+                <span class="sample-badge-dot dot-pituitary"></span>
+                <span>Pituitary Tumor</span>
+              </h3>
+              <p class="about-subcard-text">
+                Pituitary adenomas originate in the pituitary gland situated at the skull base in the sella turcica. Because the pituitary regulates key hormone production, these tumors often present with endocrine disturbances or visual field deficits caused by optic chiasm compression.
+              </p>
+            </div>
+
+            <div class="about-subcard" id="notumor">
+              <h3 class="about-subcard-title">
+                <span class="sample-badge-dot dot-notumor"></span>
+                <span>No Tumor</span>
+              </h3>
+              <p class="about-subcard-text">
+                Represents images labeled in the project's dataset as showing no detectable intracranial lesions. These scans display typical symmetrical cerebral hemispheres, intact ventricular anatomy, and absence of mass effects or contrast anomalies.
+              </p>
+            </div>
+          </div>
+        </article>
+
+        <!-- SECTION 4: How AI Classification Works -->
+        <article class="about-article" id="ai-works">
+          <h2 class="about-h2">
+            <svg class="about-h2-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="3"></circle>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+            </svg>
+            <span>Section 4 &mdash; How AI Classification Works (Step-by-Step)</span>
+          </h2>
+          <div class="cards-grid-3">
+            <div class="about-subcard">
+              <h3 class="about-subcard-title">Step 1 &bull; MRI Input</h3>
+              <p class="about-subcard-text">User uploads an axial brain MRI scan in PNG or JPG format.</p>
+            </div>
+            <div class="about-subcard">
+              <h3 class="about-subcard-title">Step 2 &bull; Preprocessing</h3>
+              <p class="about-subcard-text">Image is resized to 224&times;224 pixels and normalized by dividing RGB pixel intensities by 255.0.</p>
+            </div>
+            <div class="about-subcard">
+              <h3 class="about-subcard-title">Step 3 &bull; CNN Feature Extraction</h3>
+              <p class="about-subcard-text">Convolutional filters scan the image grid, computing dot products to highlight edges, curves, and lesion textures.</p>
+            </div>
+            <div class="about-subcard">
+              <h3 class="about-subcard-title">Step 4 &bull; Classification</h3>
+              <p class="about-subcard-text">Learned spatial feature maps are flattened into a 1D vector and passed to a Dense layer with 128 hidden neurons.</p>
+            </div>
+            <div class="about-subcard">
+              <h3 class="about-subcard-title">Step 5 &bull; Softmax Prediction</h3>
+              <p class="about-subcard-text">The final 4-unit layer applies the Softmax activation function to convert logits into a probability distribution totaling 1.0.</p>
+            </div>
+            <div class="about-subcard">
+              <h3 class="about-subcard-title">Step 6 &bull; Confidence Display</h3>
+              <p class="about-subcard-text">The system returns the predicted category along with relative probability scores for each of the 4 classes.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- SECTION 5: CNN Architecture Breakdown -->
+        <article class="about-article" id="cnn">
+          <h2 class="about-h2">
+            <svg class="about-h2-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+              <polyline points="2 17 12 22 22 17"></polyline>
+              <polyline points="2 12 12 17 22 12"></polyline>
+            </svg>
+            <span>Section 5 &mdash; Convolutional Neural Network (CNN) Architecture</span>
+          </h2>
+          <p class="about-p">
+            The project utilizes a Sequential Convolutional Neural Network implemented in TensorFlow/Keras. Below is the layer-by-layer parameter specification:
+          </p>
+
+          <div class="cnn-flow-container">
+            <div class="cnn-layer-row">
+              <span class="cnn-layer-index">00</span>
+              <span class="cnn-layer-name">Input Layer</span>
+              <span class="cnn-layer-desc">Ingests normalized axial brain MRI images</span>
+              <span class="cnn-layer-shape">(224, 224, 3)</span>
+            </div>
+            <div class="cnn-layer-row">
+              <span class="cnn-layer-index">01</span>
+              <span class="cnn-layer-name">Conv2D + ReLU</span>
+              <span class="cnn-layer-desc">32 filters, 3&times;3 kernel size, extracts low-level edges</span>
+              <span class="cnn-layer-shape">(222, 222, 32)</span>
+            </div>
+            <div class="cnn-layer-row">
+              <span class="cnn-layer-index">02</span>
+              <span class="cnn-layer-name">MaxPooling2D</span>
+              <span class="cnn-layer-desc">2&times;2 pool size, halves spatial dimensions</span>
+              <span class="cnn-layer-shape">(111, 111, 32)</span>
+            </div>
+            <div class="cnn-layer-row">
+              <span class="cnn-layer-index">03</span>
+              <span class="cnn-layer-name">Conv2D + ReLU</span>
+              <span class="cnn-layer-desc">64 filters, 3&times;3 kernel size, detects texture contours</span>
+              <span class="cnn-layer-shape">(109, 109, 64)</span>
+            </div>
+            <div class="cnn-layer-row">
+              <span class="cnn-layer-index">04</span>
+              <span class="cnn-layer-name">MaxPooling2D</span>
+              <span class="cnn-layer-desc">2&times;2 pool size, downsamples feature maps</span>
+              <span class="cnn-layer-shape">(54, 54, 64)</span>
+            </div>
+            <div class="cnn-layer-row">
+              <span class="cnn-layer-index">05</span>
+              <span class="cnn-layer-name">Conv2D + ReLU</span>
+              <span class="cnn-layer-desc">128 filters, 3&times;3 kernel size, captures complex lesion shapes</span>
+              <span class="cnn-layer-shape">(52, 52, 128)</span>
+            </div>
+            <div class="cnn-layer-row">
+              <span class="cnn-layer-index">06</span>
+              <span class="cnn-layer-name">MaxPooling2D</span>
+              <span class="cnn-layer-desc">2&times;2 pool size, final spatial pooling</span>
+              <span class="cnn-layer-shape">(26, 26, 128)</span>
+            </div>
+            <div class="cnn-layer-row">
+              <span class="cnn-layer-index">07</span>
+              <span class="cnn-layer-name">Flatten</span>
+              <span class="cnn-layer-desc">Unrolls multi-dimensional tensor into 1D feature vector</span>
+              <span class="cnn-layer-shape">(86,528)</span>
+            </div>
+            <div class="cnn-layer-row">
+              <span class="cnn-layer-index">08</span>
+              <span class="cnn-layer-name">Dense + ReLU</span>
+              <span class="cnn-layer-desc">128 fully connected neurons for high-level pattern combination</span>
+              <span class="cnn-layer-shape">(128)</span>
+            </div>
+            <div class="cnn-layer-row">
+              <span class="cnn-layer-index">09</span>
+              <span class="cnn-layer-name">Dropout (0.5)</span>
+              <span class="cnn-layer-desc">Regularization layer, randomly drops 50% neurons to prevent overfitting</span>
+              <span class="cnn-layer-shape">(128)</span>
+            </div>
+            <div class="cnn-layer-row">
+              <span class="cnn-layer-index">10</span>
+              <span class="cnn-layer-name">Dense + Softmax</span>
+              <span class="cnn-layer-desc">4 output units representing the 4 classification classes</span>
+              <span class="cnn-layer-shape">(4)</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- SECTION 6: Dataset & Training Configuration -->
+        <article class="about-article" id="dataset">
+          <h2 class="about-h2">
+            <svg class="about-h2-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+              <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+              <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
+            </svg>
+            <span>Section 6 &mdash; Dataset &amp; Training Pipeline Specifications</span>
+          </h2>
+          <p class="about-p">
+            The dataset configuration and training pipeline recorded in the project's repository are summarized below:
+          </p>
+          <div class="about-cards-grid">
+            <div class="about-subcard">
+              <h3 class="about-subcard-title">Training Dataset</h3>
+              <p class="about-subcard-text">
+                5,600 MRI images distributed across the 4 classes (batch size: 32, image resolution: 224&times;224).
+              </p>
+            </div>
+            <div class="about-subcard">
+              <h3 class="about-subcard-title">Testing Dataset</h3>
+              <p class="about-subcard-text">
+                1,600 independent MRI images reserved exclusively for model validation and performance evaluation (400 scans per class).
+              </p>
+            </div>
+            <div class="about-subcard">
+              <h3 class="about-subcard-title">Optimization &amp; Loss</h3>
+              <p class="about-subcard-text">
+                Trained using the Adam optimizer with sparse categorical crossentropy loss across 15 epochs.
+              </p>
+            </div>
+            <div class="about-subcard">
+              <h3 class="about-subcard-title">Model Evaluation</h3>
+              <p class="about-subcard-text">
+                Final evaluated test accuracy of <strong>89.13%</strong> (loss: 1.3369) on the 1,600 unseen test images.
+              </p>
+            </div>
+          </div>
+        </article>
+
+        <!-- SECTION 7: Important Limitations & Clinical Ethics -->
+        <article class="about-article" id="limitations">
+          <h2 class="about-h2">
+            <svg class="about-h2-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+              <line x1="12" y1="9" x2="12" y2="13"></line>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+            <span>Section 7 &mdash; Important Model Limitations</span>
+          </h2>
+          <div class="limitations-box">
+            <p class="about-p" style="color: #fecaca;">
+              Computer vision models applied to medical imagery possess critical constraints that must be understood:
+            </p>
+            <ul class="limitations-list">
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="15" y1="9" x2="9" y2="15"></line>
+                  <line x1="9" y1="9" x2="15" y2="15"></line>
+                </svg>
+                <span><strong>AI predictions can contain false positives and false negatives:</strong> No neural network operates with 100% diagnostic certainty. Misclassifications can and do occur.</span>
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="15" y1="9" x2="9" y2="15"></line>
+                  <line x1="9" y1="9" x2="15" y2="15"></line>
+                </svg>
+                <span><strong>Dependence on Training Data:</strong> Performance depends on the photographic quality, scanner manufacturer, contrast protocols, and slice angle present in the training set.</span>
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="15" y1="9" x2="9" y2="15"></line>
+                  <line x1="9" y1="9" x2="15" y2="15"></line>
+                </svg>
+                <span><strong>Image Artifacts &amp; Distortion:</strong> Patient movement, metallic implants, or low-resolution scans can distort features and cause erroneous classification.</span>
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="15" y1="9" x2="9" y2="15"></line>
+                  <line x1="9" y1="9" x2="15" y2="15"></line>
+                </svg>
+                <span><strong>Dataset Bias &amp; Scope:</strong> The model is constrained to 4 categories; it cannot diagnose vascular malformations, infections, or other neuro-pathologies.</span>
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="15" y1="9" x2="9" y2="15"></line>
+                  <line x1="9" y1="9" x2="15" y2="15"></line>
+                </svg>
+                <span><strong>Clinical Consultation Required:</strong> This application is intended solely for educational and academic research. It must never substitute for clinical interpretation by certified radiologists and oncologists.</span>
+              </li>
+            </ul>
+          </div>
+        </article>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand-col">
+          <a href="index.html" class="nav-brand">
+            <div class="brand-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2a7 7 0 0 0-7 7c0 2.5 1.5 4.5 3 6v3h8v-3c1.5-1.5 3-3.5 3-6a7 7 0 0 0-7-7z"></path>
+                <path d="M9 18h6"></path>
+                <path d="M10 22h4"></path>
+              </svg>
+            </div>
+            <span class="brand-name">NeuroScan AI</span>
+          </a>
+          <p class="footer-desc">
+            Deep Learning Based Brain Tumor Detection and Classification from MRI Images. Built for medical imaging research and educational exploration.
+          </p>
+        </div>
+
+        <div>
+          <h4 class="footer-links-title">Navigation</h4>
+          <ul class="footer-links-list">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="prediction.html">Prediction Dashboard</a></li>
+            <li><a href="about.html">About &amp; Architecture</a></li>
+            <li><a href="about.html#limitations">Model Limitations</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-links-title">Resources</h4>
+          <ul class="footer-links-list">
+            <li><a href="https://github.com/VikramNolan/Deep-Learning-Based-Brain-Tumor-Detection-and-Classification-from-MRI-Images" target="_blank" rel="noopener">GitHub Repository</a></li>
+            <li><a href="about.html#dataset">Dataset Specifications</a></li>
+            <li><a href="about.html#cnn">CNN Layer Breakdown</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>&copy; NeuroScan AI Project &bull; Educational / Research Project &mdash; Not for clinical diagnosis.</span>
+        <span>Version 1.0 &bull; CNN Sequential Model</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/main.js"></script>
+  <script src="js/about.js"></script>
+</body>
+</html>
